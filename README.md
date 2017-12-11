@@ -1,0 +1,1 @@
+# docker-compose-openjdk-node-sonarqube-scanner
