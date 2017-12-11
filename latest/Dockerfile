@@ -7,4 +7,4 @@ RUN wget "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-s
     rm sonar-scanner/**/*.bat; \
     mv sonar-scanner/bin/* /usr/local/bin; \
     mv sonar-scanner/lib/* /usr/local/lib; \
-    chmod +x /usr/local/bin/sonar-*;
+    chmod +x /usr/local/bin/sonar-*
