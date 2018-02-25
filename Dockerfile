@@ -30,5 +30,5 @@ RUN wget "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-s
 
 ## CI User
 RUN useradd -ms /bin/bash ci && adduser ci sudo
-USER ci
+USER ci:0
 WORKDIR /home/ci
