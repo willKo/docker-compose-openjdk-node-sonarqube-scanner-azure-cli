@@ -33,7 +33,6 @@ RUN addgroup --gid 1101 docker && \
     # Wir verwenden u.a. dieses Image in RancherOs und brauchen deswegen diese Gruppe: http://rancher.com/docs/os/v1.1/en/system-services/custom-system-services/#creating-your-own-console
     useradd -ms /bin/bash emundo && \
     adduser emundo sudo && \
-    chown --recursive emundo:emundo /home/emundo && \
     # Das ist notwendig, damit das Image in RancherOS funktioniert
     usermod -aG 1101 emundo && \
     # Das ist notwendig, damit das Image lokal funktioniert
