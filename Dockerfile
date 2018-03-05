@@ -29,10 +29,14 @@ RUN wget "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-s
     chmod +x /usr/local/bin/sonar-*
 
 ## emundo User
-RUN addgroup --gid 1101 docker && \
-    # Wir verwenden u.a. dieses Image in RancherOs und brauchen deswegen diese Gruppe: http://rancher.com/docs/os/v1.1/en/system-services/custom-system-services/#creating-your-own-console
+RUN addgroup --gid 1101 rancher && \
+    # Für RancherOS brauchen wir diese Gruppe: http://rancher.com/docs/os/v1.1/en/system-services/custom-system-services/#creating-your-own-console
+    addgroup --gid 999 aws && \
+    # Für die AWS brauchen wir diese Gruppe
     useradd -ms /bin/bash emundo && \
     adduser emundo sudo && \
+    # Das ist notwendig, damit das Image in RancherOS funktioniert
+    usermod -aG 999 emundo && \
     # Das ist notwendig, damit das Image in RancherOS funktioniert
     usermod -aG 1101 emundo && \
     # Das ist notwendig, damit das Image lokal funktioniert
