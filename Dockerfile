@@ -28,6 +28,8 @@ RUN wget "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-s
     rm -rf sonar-scanner; \
     chmod +x /usr/local/bin/sonar-*
 
+RUN npm install -g npm@5.7.1
+
 ## emundo User
 RUN addgroup --gid 1101 rancher && \
     # Für RancherOS brauchen wir diese Gruppe: http://rancher.com/docs/os/v1.1/en/system-services/custom-system-services/#creating-your-own-console
