@@ -28,6 +28,7 @@ RUN wget "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-s
     rm -rf sonar-scanner; \
     chmod +x /usr/local/bin/sonar-*
 
+# Neustes npm
 RUN npm install -g npm@latest
 
 ## emundo User
