@@ -1,6 +1,7 @@
 FROM openjdk:8
 
 RUN apt-get update \
+    && apt-get upgrade -y \
     && apt-get install -y apt-transport-https
 
 # add Node.js source
@@ -21,17 +22,15 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub \
 RUN apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
-        # benötigt für Chrome Headless
-        gconf-service \
         google-chrome-unstable \
         gnupg2 \
-        # benötigt für Chrome Headless
-        libxss1 \
         nodejs \
         software-properties-common \
         tar \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+ENV PATH "$PATH:/opt/google/chrome-unstable/"
 
 RUN npm install -g npm@latest \
     && npm cache clean --force
