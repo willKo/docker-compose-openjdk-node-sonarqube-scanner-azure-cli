@@ -1,19 +1,40 @@
 FROM openjdk:8
 
-RUN curl -sL https://deb.nodesource.com/setup_10.x | sh
 RUN apt-get update \
-    && apt-get install -y \
+    && apt-get install -y apt-transport-https
+
+# add Node.js source
+RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key \
+        | apt-key add - \
+    && sh -c 'echo "deb https://deb.nodesource.com/node_10.x stretch main" > /etc/apt/sources.list.d/nodesource.list' \
+    && sh -c 'echo "deb-src https://deb.nodesource.com/node_10.x stretch main" >> /etc/apt/sources.list.d/nodesource.list' \
+    && apt-get update -o Dir::Etc::sourcelist="sources.list.d/nodesource.list" \
+        -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+
+# add Google Chrome source
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub \
+        | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update -o Dir::Etc::sourcelist="sources.list.d/google.list" \
+        -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+
+RUN apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
         # benötigt für Chrome Headless
         gconf-service \
+        google-chrome-unstable \
         gnupg2 \
         # benötigt für Chrome Headless
         libxss1 \
         nodejs \
         software-properties-common \
         tar \
-    && apt-get clean
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN npm install -g npm@latest \
+    && npm cache clean --force
 
 ## Docker Compose
 RUN curl -sL https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose \
@@ -43,9 +64,6 @@ RUN wget \
     mv sonar-scanner/lib/* /usr/local/lib; \
     rm -rf sonar-scanner; \
     chmod +x /usr/local/bin/sonar-*
-
-RUN npm install -g npm@latest \
-    && npm cache clean --force
 
 ## emundo User
 RUN addgroup --gid 1101 rancher \
