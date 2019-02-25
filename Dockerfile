@@ -67,7 +67,7 @@ RUN curl -L https://github.com/rancher/rancher-compose/releases/download/v0.12.5
     && chmod +x /usr/local/bin/rancher-compose
 
 RUN wget \
-        "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227.zip" \
+        "https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.3.0.1492/sonar-scanner-cli-3.3.0.1492.zip" \
         -O ./sonar-scanner.zip; \
     jar xf sonar-scanner.zip; \
     mv sonar-scanner-* sonar-scanner; \
