@@ -2,7 +2,19 @@ FROM openjdk:8
 
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y apt-transport-https
+    && apt-get install -y apt-transport-https lsb-release software-properties-common dirmngr
+
+# add azure to sources list
+RUN AZ_REPO=$(lsb_release -cs) &&\
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
+    tee /etc/apt/sources.list.d/azure-cli.list
+# get microsoft signing key
+RUN apt-key --keyring /etc/apt/trusted.gpg.d/Microsoft.gpg adv \
+     --keyserver packages.microsoft.com \
+     --recv-keys BC528686B50D79E339D3721CEB3E94ADBE1229CF
+# install azure cli
+RUN  apt-get update &&\
+     apt-get install azure-cli
 
 # add Node.js source
 RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key \
@@ -19,6 +31,8 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub \
     && apt-get update -o Dir::Etc::sourcelist="sources.list.d/google.list" \
         -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
 
+
+# install other dependencies
 RUN apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
